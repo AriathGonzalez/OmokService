@@ -83,7 +83,7 @@ else {
     [$opX, $opY] = SmartStrategy::doSmart($loadedGame->board->places);
     $loadedGame->board->places[$opX][$opY] = 2;
 }
-$opponentInfo = json_decode($loadedGame->checkPlaces($x, $y, 2));
+$opponentInfo = json_decode($loadedGame->checkPlaces($opX, $opY, 2));
 
 // Save Game
 Game::saveGame($loadedGame, $file);
@@ -92,7 +92,7 @@ Game::saveGame($loadedGame, $file);
 echo json_encode(array(
     "response" => true,
     "ack_move" => $playerInfo,
-    "move" => $opponentInfo
+    "move" => $opponentInfo,
 ));
 
 ?>
