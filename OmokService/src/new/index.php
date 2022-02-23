@@ -1,7 +1,6 @@
 <?php
 include_once "../play/Game.php";
 include_once "../play/Board.php";
-include_once "../play/MoveStrategy.php";
 
 $response = false;  // To check if request accepted or rejected
 define('STRATEGY', 'strategy');  // constant
@@ -30,8 +29,7 @@ else{
     
     // Create new Game
     $board = new Board(15);
-    $moveStrategy = new MoveStrategy($strategy);
-    $game = new Game($board, $moveStrategy, $uniquePlayID);
+    $game = new Game($board, $strategy, $uniquePlayID);
     
     // Save Game
     $file = "../data/".$uniquePlayID.".txt";

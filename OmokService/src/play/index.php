@@ -65,7 +65,7 @@ $json = file_get_contents($file);
 $loadedGame = Game::fromJson($json);
 
 // Player turn
-if (!$loadedGame->checkEmpty($x, $y, 1)){
+if (!$loadedGame->checkEmpty($x, $y)){
     $response = false;
     $reason = "Place not empty,($x,$y)";
     echo json_encode(array("response" => $response, "reason" => $reason));
@@ -75,14 +75,17 @@ $loadedGame->board->places[$x][$y] = 1;
 $playerInfo = json_decode($loadedGame->checkPlaces($x, $y, 1));
 
 // Opponent turn
-if ($loadedGame->strategy->name === "Random"){
-    [$opX, $opY] = RandomStrategy::doRandom($loadedGame->board->places);
+if ($loadedGame->strategy === "Random"){
+    $randomStrategy = new RandomStrategy($loadedGame->board);
+    [$opX, $opY] = $randomStrategy->pickPlace();
     $loadedGame->board->places[$opX][$opY] = 2;
 }
 else {
-    [$opX, $opY] = SmartStrategy::doSmart($loadedGame->board->places);
+    $smartStrategy = new SmartStrategy($loadedGame->board);
+    [$opX, $opY] = $smartStrategy->pickPlace();
     $loadedGame->board->places[$opX][$opY] = 2;
 }
+$loadedGame->board->places[$opX][$opY] = 2;
 $opponentInfo = json_decode($loadedGame->checkPlaces($opX, $opY, 2));
 
 // Save Game

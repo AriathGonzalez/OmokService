@@ -1,25 +1,31 @@
 <?php
-
-class MoveStrategy {
-    public $name;
+abstract class MoveStrategy {
+    protected  $board;
     
-    public function __construct($name){
-        $this->name = $name;
+    public function __construct(Board $board = null) {
+        $this->board = $board;
     }
     
+    abstract function pickPlace();
+    
     // JSON representation of MoveStrategy
-    public static function toJson (){
-        return json_encode($this);
+    public function toJson (){
+        return array(‘name’ => get_class($this));
     }
     
     // From JSON, returns a new MoveStrategy
-    public static function fromJson($json) {
-        $obj = json_decode($json); // of stdClass
-        //$strategy = $obj->{'name'};
-        $moveStrategy = new MoveStrategy("");
-        $moveStrategy->name = $obj->name;
-        return $moveStrategy;
+    public static function fromJson() {
+        $class = get_called_class();
+        return new $class;
+    }
+    
+    protected function boardSize(){
+        return $this->board->size;
+    }
+    
+    // Check if position chosen by opponent is empty
+    public function checkEmpty($x, $y){
+        return $this->board->places[$x][$y] !== 0 and $this->board->places[$x][$y] !== 1 ? false:true;
     }
 }
-
 ?>

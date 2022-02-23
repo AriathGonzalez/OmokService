@@ -1,16 +1,18 @@
 <?php
 include_once "Board.php";
 include_once "MoveStrategy.php";
+include_once "RandomStrategy.php";
+include_once "SmartStrategy.php";
 
 class Game {
-    public $strategy;
     public $board;
+    public $strategy;
     public $pid;
     
     
-    public function __construct($board, $moveStrategy, $pid){
+    public function __construct($board, $strategy, $pid){
         $this->board = $board;
-        $this->strategy = $moveStrategy;
+        $this->strategy = $strategy;
         $this->pid = $pid;
     }
     
@@ -24,12 +26,12 @@ class Game {
         $obj = json_decode($json); // of stdClass
         $game = new Game(null, null, 0);
         $game->board = Board::fromJson(json_encode($obj->board));
-        $game->strategy = MoveStrategy::fromJson(json_encode($obj->strategy)); 
+        $game->strategy = $obj->strategy;
         return $game;
     }
     
     // Check if position chosen by player is empty
-    public function checkEmpty($x, $y, $player){
+    public function checkEmpty($x, $y){
         return $this->board->places[$x][$y] !== 0 ? false:true;
     }
     
