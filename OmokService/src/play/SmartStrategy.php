@@ -8,8 +8,9 @@ class SmartStrategy extends MoveStrategy{
     
     // Opponent does Smart Strategy
     public function pickPlace(){
-        $pos = json_decode(file_get_contents($this->posFile));
-        $x = $pos->x; $y = $pos->y;
+        $json = file_get_contents($this->posFile);
+        $obj = json_decode($json);
+        $x = $obj->x; $y = $obj->y;
         $size = $this->boardSize(); $board = $this->board->places;
         
         $playerInfo = $this->board->checkPlaces($x, $y, 1, 3);
@@ -18,7 +19,7 @@ class SmartStrategy extends MoveStrategy{
         // Player close to winning -> Defend
         if (property_exists($playerInfo, "dir")){
             $dir = $playerInfo->dir;
-            return $this->defend($x, );
+            return $this->defend($dir, $board, $size, $x, $y);
             
         }
         // Otherwise -> Attack
@@ -59,7 +60,7 @@ class SmartStrategy extends MoveStrategy{
         if ($yc - 1 > -1){
             $yc--;
             if ($board[$x][$yc] === 0){
-                return [$x][$yc];
+                return [$x, $yc];
             }
         }
         
@@ -72,7 +73,7 @@ class SmartStrategy extends MoveStrategy{
         if ($yc + 1 < $size){
             $yc++;
             if ($board[$x][$yc] === 0){
-                return [$x][$yc];
+                return [$x, $yc];
             }
         }
         
@@ -90,7 +91,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc - 1 > -1){
             $xc--;
             if ($board[$xc][$y] === 0){
-                return [$xc][$y];
+                return [$xc, $y];
             }
         }
         
@@ -103,7 +104,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc + 1 < $size){
             $xc++;
             if ($board[$xc][$y] === 0){
-                return [$xc][$y];
+                return [$xc, $y];
             }
         }
         
@@ -121,7 +122,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc - 1  > -1 and $yc - 1 > -1){
             $xc--; $yc--;
             if ($board[$xc][$yc] === 0){
-                return [$xc][$yc];
+                return [$xc, $yc];
             }
         }
         
@@ -134,7 +135,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc + 1 < $size and $yc + 1 < $size){
             $xc++; $yc++;
             if ($board[$xc][$yc] === 0){
-                return [$xc][$yc];
+                return [$xc, $yc];
             }
         }
         
@@ -152,7 +153,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc - 1  > -1 and $yc + 1 < $size){
             $xc--; $yc++;
             if ($board[$xc][$yc] === 0){
-                return [$xc][$yc];
+                return [$xc, $yc];
             }
         }
         
@@ -166,7 +167,7 @@ class SmartStrategy extends MoveStrategy{
         if ($xc + 1 < $size and $yc - 1 > -1){
             $xc++; $yc--;
             if ($board[$xc][$yc] === 0){
-                return [$xc][$yc];
+                return [$xc, $yc];
             }
         }
         
