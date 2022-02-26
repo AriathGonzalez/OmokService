@@ -1,9 +1,11 @@
 <?php
 abstract class MoveStrategy {
     protected  $board;
+    public $posFile;
     
-    public function __construct(Board $board = null) {
+    public function __construct(Board $board = null, $posFile = null) {
         $this->board = $board;
+        $this->posFile = $posFile;
     }
     
     abstract function pickPlace();
@@ -21,11 +23,6 @@ abstract class MoveStrategy {
     
     protected function boardSize(){
         return $this->board->size;
-    }
-    
-    // Check if position chosen by opponent is empty
-    public function checkEmpty($x, $y){
-        return $this->board->places[$x][$y] !== 0 and $this->board->places[$x][$y] !== 1 ? false:true;
     }
 }
 ?>

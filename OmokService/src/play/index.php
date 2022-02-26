@@ -65,7 +65,7 @@ $json = file_get_contents($file);
 $loadedGame = Game::fromJson($json);
 
 // Player turn
-if (!$loadedGame->checkEmpty($x, $y)){
+if ($loadedGame->checkEmpty($x, $y)){
     $response = false;
     $reason = "Place not empty,($x,$y)";
     echo json_encode(array("response" => $response, "reason" => $reason));
@@ -73,6 +73,15 @@ if (!$loadedGame->checkEmpty($x, $y)){
 }
 $loadedGame->board->places[$x][$y] = 1;
 $playerInfo = json_decode($loadedGame->checkPlaces($x, $y, 1));
+
+// If 'dir' in playerInfo -> Delete
+if (property_exists($playerInfo, "dir")){
+    unset($playerInfo->{$dir});
+}
+
+// Save player position for Smart Strat
+$posFile = "../data/".$x.$y.".txt";
+file_put_contents($posFile, json_encode(array("x" => $x, "y" => $y)));
 
 // Opponent turn
 if ($loadedGame->strategy === "Random"){
@@ -87,6 +96,11 @@ else {
 }
 $loadedGame->board->places[$opX][$opY] = 2;
 $opponentInfo = json_decode($loadedGame->checkPlaces($opX, $opY, 2));
+
+// If 'dir' in opponentInfo -> Delete
+if (property_exists($opponentInfo, "dir")){
+    unset($opponentInfo->{$dir});
+}
 
 // Save Game
 Game::saveGame($loadedGame, $file);
