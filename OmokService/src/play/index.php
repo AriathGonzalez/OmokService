@@ -76,7 +76,7 @@ $playerInfo = json_decode($loadedGame->board->checkPlaces($x, $y, 1, 5));
 
 // If 'dir' in playerInfo -> Delete
 if (property_exists($playerInfo, "dir")){
-    unset($playerInfo->{$dir});
+    unset($playerInfo->dir);
 }
 
 // Save player position for Smart Strat
@@ -99,7 +99,7 @@ $opponentInfo = json_decode($loadedGame->board->checkPlaces($opX, $opY, 2, 5));
 
 // If 'dir' in opponentInfo -> Delete
 if (property_exists($opponentInfo, "dir")){
-    unset($opponentInfo->{$dir});
+    unset($opponentInfo->dir);
 }
 
 // Save Game

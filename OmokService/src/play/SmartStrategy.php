@@ -85,7 +85,7 @@ class SmartStrategy extends MoveStrategy{
         $xc = $x; 
         
         // Check Up
-        while ($xc - 1 > -1 and $board[$xc - 1][$yc] === 1){
+        while ($xc - 1 > -1 and $board[$xc - 1][$y] === 1){
             $xc--;
         }
         if ($xc - 1 > -1){
@@ -98,7 +98,7 @@ class SmartStrategy extends MoveStrategy{
         $xc = $x;
         
         // Check Down
-        while ($xc + 1 < $size and $board[$xc + 1][$yc] === 1){
+        while ($xc + 1 < $size and $board[$xc + 1][$y] === 1){
             $xc++;
         }
         if ($xc + 1 < $size){
